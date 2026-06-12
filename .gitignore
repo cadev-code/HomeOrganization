@@ -1,0 +1,8 @@
+.env
+
+.docker/data/
+
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

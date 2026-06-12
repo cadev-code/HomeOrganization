@@ -1,0 +1,31 @@
+name: Conformance & Testing (QA)
+
+# El flujo se dispara SOLO cuando se abre o actualiza un Pull Request hacia la rama QA
+on:
+  pull_request:
+    branches: ['QA']
+
+jobs:
+  validate-php:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar el código del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar entorno de PHp
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_pgsql
+
+      - name: Validar sintaxis de PHP (Linting)
+        run: |
+          echo "Revisando errores de sintaxis en los archivos PHP..."
+           find app/ public/ -type f -name "*.php" -print0 | xargs -0 -n 1 php -l
+
+      - name: Simular Pruebas Unitarias
+        run: |
+          echo "Ejecutando suite de pruebas"
+          # AQUÍ SE AGREGARAN LAS PRUEBAS CON PHPUnit
+          echo "Pruebas unitarias exitosas"

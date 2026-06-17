@@ -1,6 +1,5 @@
 name: Deploy to Production (CD)
 
-# Se dispara únicamente cuando se hace un merge o push confirmado a main
 on:
   push:
     branches: ['main']
@@ -13,19 +12,19 @@ jobs:
       - name: Descargar código del repositorio
         uses: actions/checkout@v4
 
-      # --- PASO A: DESPLIEGUE DEL CÓDIGO PHP ---
-      - name: Subir archivos al VPS vía SSH/Rsync
-        uses: Burnett01/rsync-deployments@5.2.1
+      # --- PASO A: DESPLIEGUE DEL CÓDIGO PHP CON SCP (OPTIMIZADO PARA CONTRASEÑA) ---
+      - name: Subir archivos al VPS vía SCP
+        uses: appleboy/scp-action@v0.1.7
         with:
-          switches: -avzr --delete
-          path: .
-          remote_path: /var/www/HomeOrganization
-          remote_host: ${{ secrets.SSH_HOST }}
-          remote_user: ${{ secrets.SSH_USERNAME }}
-          remote_key: '' # Dejar vacío si usas contraseña
-          ssh_cmd_args: '-o StrictHostKeyChecking=no'
-        env:
-          SSHPASS: ${{ secrets.SSH_PASSWORD }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          source: '.'
+          target: '/var/www/HomeOrganization'
+          # Evitamos subir archivos locales de configuración o de Git innecesarios
+          rm: false
+          strip_components: 0
 
       - name: Reiniciar PHP-FPM para limpiar caché de código
         uses: appleboy/ssh-action@v1.0.3

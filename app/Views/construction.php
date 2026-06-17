@@ -9,7 +9,7 @@
 <body>
   <div class="container">
     <h1>🚀 Proyecto en Camino</h1>
-        <p>Estamos construyendo algo increíble. Nuestro nuevo sitio web estará disponible muy pronto.</p>
+        <p>Estamos construyendo algo increíble. Nuestro nuevo sitio web estará disponible muy pronto. Con Workflow.</p>
         <div class="badge">Próximamente / En Producción</div>
 
         <p>
